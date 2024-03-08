@@ -1,6 +1,7 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+    id 'maven-publish'
     alias libs.plugins.spotless
 }
 
@@ -92,5 +93,49 @@ spotless {
         importOrder 'org.hyperledger', 'java', 'javax', ''
         trimTrailingWhitespace()
         endWithNewline()
+    }
+}
+
+publishing {
+    publications {
+        library(MavenPublication) {
+            groupId = 'org.hyperledger.errorpronechecks'
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'besu-errorprone-checks'
+                description = 'A collection of custom error prone checks'
+                url = 'https://github.com/hyperledger/besu-errorprone-checks'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/hyperledger/besu-errorprone-checks.git'
+                    developerConnection = 'scm:git:ssh://github.com/hyperledger/besu-errorprone-checks.git'
+                    url = 'https://github.com/hyperledger/besu-errorprone-checks'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/hyperledger/besu-errorprone-checks"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
