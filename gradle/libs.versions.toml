@@ -10,6 +10,7 @@ slf4j = "2.0.10"
 picocli = "4.7.5"
 jetbrain-annotations = "24.1.0"
 spotless = "6.25.0"
+artifactory = "5.2.0"
 
 [libraries]
 picocli = { module = "info.picocli:picocli", version.ref = "picocli" }
@@ -29,3 +30,4 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+artifactory = { id = "com.jfrog.artifactory", version.ref = "artifactory" }

@@ -3,6 +3,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     alias libs.plugins.spotless
+    alias libs.plugins.artifactory
 }
 
 repositories {
@@ -99,7 +100,7 @@ spotless {
 publishing {
     publications {
         library(MavenPublication) {
-            groupId = 'org.hyperledger.errorpronechecks'
+            groupId = 'org.hyperledger.besu'
             from components.java
             versionMapping {
                 usage('java-api') {
@@ -135,6 +136,27 @@ publishing {
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+
+    def artifactoryUser = project.hasProperty('artifactoryUser') ? project.property('artifactoryUser') : System.getenv('ARTIFACTORY_USER')
+    def artifactoryKey = project.hasProperty('artifactoryApiKey') ? project.property('artifactoryApiKey') : System.getenv('ARTIFACTORY_KEY')
+    def artifactoryRepo = System.getenv('ARTIFACTORY_REPO') ?: 'besu-maven'
+    def artifactoryOrg = System.getenv('ARTIFACTORY_ORG') ?: 'hyperledger'
+
+    artifactory {
+        contextUrl = "https://hyperledger.jfrog.io/${artifactoryOrg}"
+        publish {
+            repository {
+                repoKey = artifactoryRepo
+                username = artifactoryUser
+                password = artifactoryKey
+            }
+            defaults {
+                publications('library')
+                publishArtifacts = true
+                publishPom = true
             }
         }
     }
