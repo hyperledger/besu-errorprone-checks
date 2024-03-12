@@ -32,3 +32,9 @@ jobs:
         run: ./gradlew publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to JFrog Artifactory
+        run: ./gradlew artifactoryPublish
+        env:
+          ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
+          ARTIFACTORY_KEY: ${{ secrets.BESU_ARTIFACTORY }}
