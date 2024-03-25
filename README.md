@@ -6,8 +6,18 @@
 This repository contains custom error-prone checks for [Hyperledger Besu](https://github.com/hyperledger/besu/).
 
 ## Usage
-These [custom error-prone checks](https://errorprone.info/docs/plugins) are used in the Besu codebase. To use these checks in your project, you can add the following dependency to your gradle file:
+These [custom error-prone checks](https://errorprone.info/docs/plugins) are used in the Besu codebase. To use these checks in your project:
 
+1. Add the following repository definition to your gradle file:
+```groovy
+  repositories {
+    maven {
+        url 'https://hyperledger.jfrog.io/hyperledger/besu-maven'
+        content { includeGroupByRegex('org\\.hyperledger\\..*') }
+    }
+  }
+```
+2. Add the following dependency to your gradle file:
 ```groovy
 dependencies {
     errorprone("org.hyperledger.errorpronechecks:besu-errorprone-checks:1.0.0")
@@ -22,4 +32,4 @@ The creation of custom errorprone checkers was largely derived from:
 To allow for debugging from within intellij, the following must be added to the VM args
 in the run/debug configuration (this assumes your gradle cache is at the default location under
 your home):
--Xbootclasspath/p:${HOME}/.gradle/caches/./modules-2/files-2.1/com.google.errorprone/javac/9+181-r4173-1/bdf4c0aa7d540ee1f7bf14d47447aea4bbf450c5/javac-9+181-r4173-1.jar
+`-Xbootclasspath/p:${HOME}/.gradle/caches/./modules-2/files-2.1/com.google.errorprone/javac/9+181-r4173-1/bdf4c0aa7d540ee1f7bf14d47447aea4bbf450c5/javac-9+181-r4173-1.jar`
